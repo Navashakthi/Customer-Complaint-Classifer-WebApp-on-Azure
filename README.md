@@ -28,9 +28,7 @@ CC-WebApp/
 2. **Azure Blob Storage**: To store and fetch training data.
 3. **Docker**: To build and run the Docker container.
 4. **Azure Container Registry**: For storing the Docker image.
-5. **Python 3.9+**
-
----
+5. **Python 3.8+**
 
 ## Step-by-Step Guide
 
@@ -53,8 +51,6 @@ CC-WebApp/
    - **Input**: The script fetches training data from Azure Blob Storage.
    - **Output**: A trained Naive Bayes model saved in a local directory (e.g., `./models`).
 
----
-
 ### 2. Building and Deploying the Application
 
 1. Build the Docker image:
@@ -74,7 +70,6 @@ CC-WebApp/
    docker push <azure-container-registry-url>/customer-complaint-classifier:latest
    ```
 
----
 
 ### 3. Running the Application Locally
 
@@ -88,7 +83,6 @@ CC-WebApp/
    ```
 3. Access the Gradio application at `http://localhost:8080`.
 
----
 
 ## Example Use Case
 
@@ -97,7 +91,6 @@ CC-WebApp/
 3. The result is displayed instantly on the Gradio UI.
 ![image](https://github.com/user-attachments/assets/eee45471-5ee2-4bb5-b9f8-9b7987a8c37e)
 
----
 
 ## Deployment Architecture
 
@@ -122,7 +115,6 @@ This below guide explains the step-by-step process to deploy a Gradio-based appl
 4. **Azure Container Registry (ACR)**: Set up to store Docker images. [Learn more about ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro)
 5. A **Docker image** of the Gradio app, pushed to ACR.
 
----
 
 ## Step 1: Prepare the Docker Image
 Image built and pushed to ACR in previous stage.
@@ -151,8 +143,6 @@ Image built and pushed to ACR in previous stage.
    - Replace `<resource-group-name>`, `<app-service-plan-name>`, and `<webapp-name>` with appropriate values.
    - Ensure `<acr-login-server>` matches your Azure Container Registry login server (e.g., `myregistry.azurecr.io`).
 
----
-
 ## Step 3: Configure Deployment Settings
 
 1. **Set ACR authentication for the Web App**:
@@ -171,7 +161,6 @@ Image built and pushed to ACR in previous stage.
      ```bash
      az acr credential show --name <acr-name>
      ```
----
 
 ## Step 4: Verify Deployment
 
@@ -184,8 +173,6 @@ Image built and pushed to ACR in previous stage.
 2. **Access the application**:
    - Open your browser and navigate to: `https://<webapp-name>.azurewebsites.net`
    - The Gradio app should now be accessible.
-
----
 
 ## Troubleshooting
 
@@ -200,7 +187,6 @@ Image built and pushed to ACR in previous stage.
   az webapp restart --name <webapp-name> --resource-group <resource-group-name>
   ```
 
----
 
 ## Additional Resources
 
@@ -208,7 +194,6 @@ Image built and pushed to ACR in previous stage.
 - [Azure CLI Reference](https://learn.microsoft.com/en-us/cli/azure/reference-index)
 - [Gradio Documentation](https://gradio.app/docs/)
 
----
 
 By following these steps, you can successfully deploy the Gradio app for classifying customer complaints on Azure Web App Services.
 
