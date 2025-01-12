@@ -18,8 +18,6 @@ CC-WebApp/
 - **Web Application**: The `app.py` script provides a Gradio-based user interface for end users to classify customer complaints using the trained model.
 - **Dockerized Deployment**: The application can be containerized using the `Dockerfile` and pushed to Azure Container Registry for scalable deployment.
 
----
-
 ## Getting Started
 
 ### Prerequisites
