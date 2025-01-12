@@ -113,63 +113,56 @@ This below guide explains the step-by-step process to deploy a Gradio-based appl
 5. A **Docker image** of the Gradio app, pushed to ACR.
 
 
-## Step 1: Prepare the Docker Image
+### Step 1: Prepare the Docker Image
 Image built and pushed to ACR in previous stage.
 
-## Step 2: Create a New Web App
+Here are the steps to create an Azure Web App using the Azure Portal (console):  
 
-1. **Log in to Azure**:
-   ```bash
-   az login
-   ```
+### **Step 2: Create a Resource Group (Optional)**  
+1. In the search bar, type **Resource Groups** and click on it.  
+2. Click **+ Create**.  
+3. Provide the following details:  
+   - **Subscription:** Choose your Azure subscription.  
+   - **Resource Group Name:** Enter a unique name for the group (e.g., `my-webapp-rg`).  
+   - **Region:** Select the region closest to your users.  
+4. Click **Review + Create**, then **Create**.
 
-2. **Create a resource group** (if not already created):
-   ```bash
-   az group create --name <resource-group-name> --location <location>
-   ```
+### **Step 3: Create the Azure Web App**  
+1. In the search bar, type **App Services** and click on it.  
+2. Click **+ Create**.  
+3. Fill in the following details on the **Basics** tab:  
+   - **Subscription:** Choose your Azure subscription.  
+   - **Resource Group:** Select the resource group you created earlier.  
+   - **Name:** Enter a unique name for your web app (e.g., `my-webapp`).  
+   - **Publish:** Choose **Code** or **Docker Container** depending on your deployment.  
+   - **Runtime stack:** If you selected **Code**, choose your language stack (e.g., Python, Node.js, Java).  
+   - **Operating System:** Choose **Windows** or **Linux** based on your requirements.  
+   - **Region:** Select the region where the app will be hosted.  
 
-3. **Create a new Azure Web App for Containers**:
-   ```bash
-   az webapp create \
-     --resource-group <resource-group-name> \
-     --plan <app-service-plan-name> \
-     --name <webapp-name> \
-     --deployment-container-image-name <acr-login-server>/customer-complaint-classifier:latest
-   ```
+### **Step 4: Configure App Service Plan**  
+1. Under **App Service Plan**, either select an existing plan or create a new one:  
+   - Click **Create New**.  
+   - Provide a name for the plan.  
+   - Choose the **Pricing Tier** (e.g., Free, Shared, or Premium).  
+   - Click **Apply**.  
 
-   - Replace `<resource-group-name>`, `<app-service-plan-name>`, and `<webapp-name>` with appropriate values.
-   - Ensure `<acr-login-server>` matches your Azure Container Registry login server (e.g., `myregistry.azurecr.io`).
+### **Step 5: Review and Create**  
+1. Click **Next** through the tabs (e.g., Monitoring, Tags). These are optional configurations:  
+   - **Monitoring:** Enable **Application Insights** if you want monitoring and telemetry.  
+2. Review your selections.  
+3. Click **Create**.  
 
-## Step 3: Configure Deployment Settings
+### **Step 6: Deploy Your Application**  
+After the deployment completes:  
+1. Go to the **Overview** page of your Web App.  
+2. Note the **URL** of your app.  
+3. Deploy your application by:  
+   - Using **FTP**, **Local Git**, or **GitHub Actions**.  
+   - Uploading a Docker image if you selected a containerized app.  
 
-1. **Set ACR authentication for the Web App**:
-   ```bash
-   az webapp config container set \
-     --name <webapp-name> \
-     --resource-group <resource-group-name> \
-     --docker-custom-image-name <acr-login-server>/customer-complaint-classifier:latest \
-     --docker-registry-server-url https://<acr-login-server> \
-     --docker-registry-server-user <acr-username> \
-     --docker-registry-server-password <acr-password>
-   ```
-
-   - Replace `<acr-username>` and `<acr-password>` with your ACR credentials.
-   - You can retrieve ACR credentials using:
-     ```bash
-     az acr credential show --name <acr-name>
-     ```
-
-## Step 4: Verify Deployment
-
-1. **Check the deployment status**:
-   ```bash
-   az webapp show --name <webapp-name> --resource-group <resource-group-name> --query state
-   ```
-   The state should return `Running`.
-
-2. **Access the application**:
-   - Open your browser and navigate to: `https://<webapp-name>.azurewebsites.net`
-   - The Gradio app should now be accessible.
+### **Step 7: Verify and Test**  
+1. Open the **URL** in a browser to verify your web app is running.  
+2. Test any API or application features you've deployed.  
 
 ## Troubleshooting
 
