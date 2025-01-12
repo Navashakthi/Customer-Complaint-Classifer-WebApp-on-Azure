@@ -116,8 +116,6 @@ This below guide explains the step-by-step process to deploy a Gradio-based appl
 ### Step 1: Prepare the Docker Image
 Image built and pushed to ACR in previous stage.
 
-Here are the steps to create an Azure Web App using the Azure Portal (console):  
-
 ### **Step 2: Create a Resource Group (Optional)**  
 1. In the search bar, type **Resource Groups** and click on it.  
 2. Click **+ Create**.  
