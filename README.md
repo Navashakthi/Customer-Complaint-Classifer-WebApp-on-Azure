@@ -90,34 +90,6 @@ CC-WebApp/
 
 ---
 
-## Files Description
-
-### 1. `train.py`
-This script:
-- Fetches training data from Azure Blob Storage.
-- Trains a Naive Bayes model on the data.
-- Saves the trained model to a specified directory.
-
-### 2. `app.py`
-This script:
-- Loads the trained model.
-- Provides a Gradio user interface to classify customer complaints.
-
-### 3. `requirements.txt`
-Lists all the dependencies required for training and serving the model. Key dependencies include:
-- `sklearn`
-- `gradio`
-- `azure-storage-blob`
-
-### 4. `Dockerfile`
-Defines the containerization process for the Gradio application:
-- Sets up the Python environment.
-- Installs the required dependencies.
-- Copies the application files and exposes port 8080.
-- Defines the command to run `app.py`.
-
----
-
 ## Example Use Case
 
 1. A user provides a customer complaint as input via the web interface.
@@ -138,6 +110,108 @@ Defines the containerization process for the Gradio application:
    - The application is deployed on an Azure WebApp.
 
 ---
+# Deploying Gradio App on Azure Web App Services
+
+This below guide explains the step-by-step process to deploy a Gradio-based application for classifying customer complaints on **Azure Web App Services** using a container image stored in **Azure Container Registry (ACR)**.
+
+## Prerequisites
+
+1. **Azure Account**: Ensure you have an active Azure subscription.
+2. **Azure CLI**: Installed and configured. [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+3. **Docker**: Installed and configured. [Install Docker](https://docs.docker.com/get-docker/)
+4. **Azure Container Registry (ACR)**: Set up to store Docker images. [Learn more about ACR](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro)
+5. A **Docker image** of the Gradio app, pushed to ACR.
+
+---
+
+## Step 1: Prepare the Docker Image
+Image built and pushed to ACR in previous stage.
+
+## Step 2: Create a New Web App
+
+1. **Log in to Azure**:
+   ```bash
+   az login
+   ```
+
+2. **Create a resource group** (if not already created):
+   ```bash
+   az group create --name <resource-group-name> --location <location>
+   ```
+
+3. **Create a new Azure Web App for Containers**:
+   ```bash
+   az webapp create \
+     --resource-group <resource-group-name> \
+     --plan <app-service-plan-name> \
+     --name <webapp-name> \
+     --deployment-container-image-name <acr-login-server>/customer-complaint-classifier:latest
+   ```
+
+   - Replace `<resource-group-name>`, `<app-service-plan-name>`, and `<webapp-name>` with appropriate values.
+   - Ensure `<acr-login-server>` matches your Azure Container Registry login server (e.g., `myregistry.azurecr.io`).
+
+---
+
+## Step 3: Configure Deployment Settings
+
+1. **Set ACR authentication for the Web App**:
+   ```bash
+   az webapp config container set \
+     --name <webapp-name> \
+     --resource-group <resource-group-name> \
+     --docker-custom-image-name <acr-login-server>/customer-complaint-classifier:latest \
+     --docker-registry-server-url https://<acr-login-server> \
+     --docker-registry-server-user <acr-username> \
+     --docker-registry-server-password <acr-password>
+   ```
+
+   - Replace `<acr-username>` and `<acr-password>` with your ACR credentials.
+   - You can retrieve ACR credentials using:
+     ```bash
+     az acr credential show --name <acr-name>
+     ```
+---
+
+## Step 4: Verify Deployment
+
+1. **Check the deployment status**:
+   ```bash
+   az webapp show --name <webapp-name> --resource-group <resource-group-name> --query state
+   ```
+   The state should return `Running`.
+
+2. **Access the application**:
+   - Open your browser and navigate to: `https://<webapp-name>.azurewebsites.net`
+   - The Gradio app should now be accessible.
+
+---
+
+## Troubleshooting
+
+- **Logs**:
+  Retrieve logs to debug issues:
+  ```bash
+  az webapp log tail --name <webapp-name> --resource-group <resource-group-name>
+  ```
+
+- **Restart the web app**:
+  ```bash
+  az webapp restart --name <webapp-name> --resource-group <resource-group-name>
+  ```
+
+---
+
+## Additional Resources
+
+- [Azure Web App Documentation](https://learn.microsoft.com/en-us/azure/app-service/)
+- [Azure CLI Reference](https://learn.microsoft.com/en-us/cli/azure/reference-index)
+- [Gradio Documentation](https://gradio.app/docs/)
+
+---
+
+By following these steps, you can successfully deploy the Gradio app for classifying customer complaints on Azure Web App Services.
+
 
 
 ## License
