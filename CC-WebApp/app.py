@@ -2,11 +2,17 @@ import gradio as gr
 import joblib
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+import os
+import uvicorn
 
 # Load the saved model and preprocessing objects
-clf = joblib.load('naive_bayes_model.pkl')
-count_vect = joblib.load('count_vectorizer.pkl')
-tfidf_transformer = joblib.load('tfidf_transformer.pkl')
+model_path = os.path.join(os.getcwd(), 'naive_bayes_model.pkl')
+countvec = os.path.join(os.getcwd(), 'count_vectorizer.pkl')
+tfidf_path = os.path.join(os.getcwd(), 'tfidf_transformer.pkl')
+clf = joblib.load(model_path)
+count_vect = joblib.load(countvec)
+tfidf_transformer = joblib.load(tfidf_path)
+print("--------Model Files loaded successfully---------")
 
 # Define a function that will be used for prediction
 def predict_complaint_category(complaint_text):
@@ -28,5 +34,7 @@ iface = gr.Interface(
     description="Enter a complaint text, and this model will predict the category of the product.",  # Description
 )
 
-# Launch the Gradio app
-iface.launch(share=True)
+print("-----Interface Created Successfully--------")
+
+# Launch the Gradio app on port 8080
+iface.launch(server_name="0.0.0.0", server_port=8080, share=True)
