@@ -100,8 +100,7 @@ CC-WebApp/
    - The Docker image is stored in Azure Container Registry.
    - The application is deployed on an Azure WebApp.
 
----
-# Deploying Gradio App on Azure Web App Services
+## Deploying Gradio App on Azure Web App Services
 
 This below guide explains the step-by-step process to deploy a Gradio-based application for classifying customer complaints on **Azure Web App Services** using a container image stored in **Azure Container Registry (ACR)**.
 
