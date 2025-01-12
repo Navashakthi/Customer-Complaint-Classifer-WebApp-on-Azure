@@ -123,6 +123,7 @@ Defines the containerization process for the Gradio application:
 1. A user provides a customer complaint as input via the web interface.
 2. The trained Naive Bayes model predicts the category of the complaint.
 3. The result is displayed instantly on the Gradio UI.
+![image](https://github.com/user-attachments/assets/eee45471-5ee2-4bb5-b9f8-9b7987a8c37e)
 
 ---
 
@@ -134,7 +135,7 @@ Defines the containerization process for the Gradio application:
    - The trained model and serving pipeline (`app.py`) are packaged into a Docker image.
 3. **Deployment**:
    - The Docker image is stored in Azure Container Registry.
-   - The application is deployed on an Azure Kubernetes Service (AKS) or similar.
+   - The application is deployed on an Azure WebApp.
 
 ---
 
