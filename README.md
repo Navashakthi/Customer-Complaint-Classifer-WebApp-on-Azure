@@ -164,6 +164,9 @@ After the deployment completes:
 1. Open the **URL** in a browser to verify your web app is running.  
 2. Test any API or application features you've deployed.  
 
+### **Step 7: Configure PORT**  
+Add website port number to environment variable as settings > Environment variables > Add new > WEBSITES_PORT = 8080
+
 ## Troubleshooting
 
 - **Logs**:
